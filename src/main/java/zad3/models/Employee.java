@@ -35,11 +35,23 @@ public class Employee extends Person {
     }
 
     @Override
-    public String getGender() {
-        if(getPesel().charAt(9) %2 == 0){
-            return "kobieta";
-        }
-        return "mężczyzna";
+    public String getData() {
+        return getClass().getSimpleName() + ","
+                + firstName + ","
+                + lastName + ","
+                + pesel + ","
+                + city + ","
+                + position + ","
+                + salary;
+    }
+
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
+                '}';
     }
 
     @Override

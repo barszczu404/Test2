@@ -1,0 +1,7 @@
+Student,Jan,Zabielski,97030209155,Kraków,A,800.5
+Student,Marta,Jarząbek,03102300422,Opole,B,1000.0
+Student,Olaf,Jarocki,98023009177,Włocławek,A,960.0
+Employee,Stanisław,Barwiński,65060804233,Katowice,sztygar,7300.0
+Employee,Marlena,Opoka,79041509188,Sławno,lekarz,4200.0
+Employee,Judyta,Zajakała,86122506466,Lublin,kasjerka,3500.0
+Employee,Zenon,Łodyga,86102399877,Ząbkowice,śmieciarz,10000.0

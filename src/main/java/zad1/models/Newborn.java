@@ -1,6 +1,6 @@
 package zad1.models;
 
-import java.util.Comparator;
+import java.util.Map;
 import java.util.Objects;
 
 public class Newborn {
@@ -13,8 +13,6 @@ public class Newborn {
     private int height;
     private Mother mother;
 
-    public Newborn() {
-    }
 
     public Newborn(int id, String gender, String firstName, String dateOfBirth, double weight, int height) {
         this.id = id;
@@ -94,4 +92,22 @@ public class Newborn {
     public int hashCode() {
         return Objects.hash(id, gender, firstName, dateOfBirth, weight, height, mother);
     }
+
+    public static Newborn createFromString(String line){
+        String[] dataFromLine = line.split(" ");
+        Newborn newborn = new Newborn(Integer.parseInt(dataFromLine[0]), dataFromLine[1], dataFromLine[2], dataFromLine[3], Integer.parseInt(dataFromLine[4]), Integer.parseInt(dataFromLine[5]));
+        return newborn;
+    }
+
+     public static Newborn createFromString(String line, Map<Integer, Mother> mothersMap){
+        String[] dataFromLine = line.split(" ");
+         int motherId = Integer.valueOf(dataFromLine[6]);
+         Newborn newborn = new Newborn(Integer.parseInt(dataFromLine[0]), dataFromLine[1], dataFromLine[2], dataFromLine[3], Integer.parseInt(dataFromLine[4]), Integer.parseInt(dataFromLine[5]));
+         Mother motherForNewborn = mothersMap.get(motherId);
+         newborn.setMother(motherForNewborn);
+         motherForNewborn.getChildren().add(newborn);
+        return newborn;
+    }
+
+
 }

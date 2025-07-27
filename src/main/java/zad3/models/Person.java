@@ -3,12 +3,12 @@ package zad3.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Person implements Serializable {
+public abstract class Person {
 
-    private String firstName;
-    private String lastName;
-    private static String pesel;
-    private String city;
+    protected String firstName;
+    protected String lastName;
+    protected String pesel;
+    protected String city;
 
     public Person(String firstName, String lastName, String pesel, String city) {
         this.firstName = firstName;
@@ -51,7 +51,34 @@ public abstract class Person implements Serializable {
 
     public abstract double getIncome();
 
-    public abstract String getGender();
+    public abstract String getData();
+
+    public static Person createFromData(String data){
+        String[] split = data.split(",");
+        return switch (split[0]) {
+            case "Employee" -> new Employee(split[1], split[2], split[3], split[4], split[5], Double.parseDouble(split[6]));
+            case "Student" -> new Student(split[1], split[2], split[3], split[4], split[5], Double.parseDouble(split[6]));
+            default -> null;
+        };
+
+    }
+
+    public String getGender(){
+        if(getPesel().charAt(9) %2 == 0){
+            return "kobieta";
+        }
+        return "mężczyzna";
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", pesel='" + pesel + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

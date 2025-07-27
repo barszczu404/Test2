@@ -16,46 +16,55 @@ public class Runner {
         Employee stach = new Employee("Stanisław", "Barwiński", "65060804233", "Katowice", "sztygar", 7300);
         Employee marlena = new Employee("Marlena", "Opoka", "79041509188", "Sławno", "lekarz", 4200);
         Employee judyta = new Employee("Judyta", "Zajakała", "86122506466", "Lublin", "kasjerka", 3500);
+        Employee zenek = new Employee("Zenon", "Łodyga", "86102399877", "Ząbkowice", "śmieciarz", 10000);
 
-        Person[] people = new Person[]{janek, marta, olaf, stach, marlena, judyta};
-        getHighestIncome(people);
-        getNumberOfWomanInGroup(people);
+        Person[] people = new Person[]{null,janek, marta, olaf, stach, marlena, judyta, null, zenek};
+        Person highestIncomePerson = getHighestIncomePerson(people);
+        getNumberOfWomenInGroup(people);
         List<Person> peopleList = Arrays.asList(people);
-        ArrayList<Person> peopleArrayList = new ArrayList<>(peopleList);
-        savePersonListToFile(peopleArrayList, "\"C:\\Users\\admin\\Desktop\\testzad3.txt\"");
-        getListOfPeopleFromFile("C:\\Users\\admin\\IdeaProjects\\Test2\\src\\main\\java\\zad2\\lekarze.txt");
+//        ArrayList<Person> peopleArrayList = new ArrayList<>(peopleList);
+       // savePersonListToFile(peopleList, "ludziska.txt");
+//        getListOfPeopleFromFile("C:\\Users\\admin\\IdeaProjects\\Test2\\src\\main\\java\\zad2\\lekarze.txt");
 
+        List<Person> loadedPeople = readPeopleFromFileToList("ludziska.txt");
+
+//
 
     }
 
-    public static Person getHighestIncome(Person[] array) {
-        //Person[] peopleSortedByIncome = new Person[array.length];
-        ArrayList<Person> peopleSortedByIncome = new ArrayList<>();
-        //int personCnt = 0;
-        for (Person person : array) {
-            if (person.getIncome() < 0) {
-//               peopleSortedByIncome[personCnt] = person;
-//               personCnt++;
-                peopleSortedByIncome.add(person);
+    public static Person getHighestIncomePerson(Person[] array) {
+        int index = 0;
+        Person highestIncomePerson = array[index];
+        for (int i = 0; i <array.length; i++) {
+            if (highestIncomePerson == null){
+                highestIncomePerson = array[index++];
+                continue;
+            }
+
+            if (array[i] != null && array[i].getIncome() > highestIncomePerson.getIncome()){
+                highestIncomePerson = array[i];
             }
         }
-        Comparator<Person> comparator = new Comparator<Person>() {
-            @Override
-            public int compare(Person o1, Person o2) {
-                return (int) (o1.getIncome() - o2.getIncome());
-            }
-        };
-        Collections.sort(peopleSortedByIncome, comparator);
-        //peopleSortedByIncome.sort(Comparator.comparingDouble(Person::getIncome));
-        Person personWithHighestIncome = peopleSortedByIncome.get((peopleSortedByIncome.size() - 1));//zapis nie dziala -1
-        return personWithHighestIncome;
+        return highestIncomePerson;
+
+//        Comparator<Person> comparator = new Comparator<Person>() {
+//            @Override
+//            public int compare(Person o1, Person o2) {
+//                return Double.compare(o1.getIncome(), o2.getIncome());
+//            }
+//        };
+//        Arrays.sort(array, comparator);
+//        //peopleSortedByIncome.sort(Comparator.comparingDouble(Person::getIncome));
+//        Person personWithHighestIncome = array[array.length - 1];
+//        return personWithHighestIncome;
     }
 
-    public static int getNumberOfWomanInGroup(Person[] genderArray) {
+    public static int getNumberOfWomenInGroup(Person[] array) {
         int women = 0;
         //int man = 0;
-        for (Person person : genderArray) {
-            if (person.getGender() == "kobieta") {
+        for (Person person : array) {
+
+            if (person != null && person.getGender().equals("kobieta")) {
                 women++;
             }
             //man++;
@@ -64,18 +73,48 @@ public class Runner {
     }
 
     // stworz metode pozwalającą zapisać liste osób do pliku w taki sposób aby można było stworzyć metodę wczytującą liste osob z pliku.
-    public static File savePersonListToFile(ArrayList<Person> personArrayList, String fileName) {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(personArrayList);
+    public static void savePersonListToFile(List<Person> list, String fileName) {
+        try (
+                FileWriter fw = new FileWriter(fileName);
+                BufferedWriter bw = new BufferedWriter(fw);
+                ) {
+            for (Person person : list) {
+                if (person != null) {
+                    bw.write(person.getData());
+                    bw.newLine();
+                }
+
+            }
+
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+           e.printStackTrace();
         }
-        return new File(fileName);
     }
 
-    public static ArrayList getListOfPeopleFromFile(String fileName) {
+
+    public static List<Person> readPeopleFromFileToList(String fileName) {
+        List<Person> loadedPeople = new ArrayList<>();
+
+        try (
+                FileReader fr = new FileReader(fileName);
+                BufferedReader br = new BufferedReader(fr);
+                ) {
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                Person personFromData = Person.createFromData(line);
+                loadedPeople.add(personFromData);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return loadedPeople;
+
+    }
+
+    public static ArrayList<Object> getListOfPeopleFromFile(String fileName) {
         ArrayList<Person> peopleFromFile = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);

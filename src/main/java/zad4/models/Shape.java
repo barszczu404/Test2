@@ -5,61 +5,69 @@ import java.util.Comparator;
 
 public abstract class Shape {
 
-    protected static int number = 0;
+    private static int counter = 0;
 
-    public double getArea() {
-        return 0;
+    private int number;
+
+    public Shape() {
     }
 
-    public double getPerimeter() {
-        return 0;
+    public static Circle createCircle(int r) {
+        Circle circle = new Circle(r);
+        ((Shape)circle).setNumber(++counter);
+        return circle;
+
     }
 
-    public static void setNumber(int number) {
-        Shape.number = number;
-    }
-
-    private static int getNumber() {
-        number = number + 1;
-        return number;
-    }
-
-    public static Circle getCircle(int r) {
-        return new Circle(r);
-    }
-
-    public static Square getSquare(int a) {
-        return new Square(a);
-    }
-
-    public static Rectangle getRectangle(int a, int b) {
-        return new Rectangle(a, b);
+    public static Square createSquare(int a) {
+        Square square =  new Square(a);
+        ((Shape)square).setNumber(++counter);
+        return square;
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Shape shape = (Shape) o;
-        return Objects.equals(comparator, shape.comparator);
+    public static Rectangle createRectangle(int a, int b) {
+        Rectangle rectangle =  new Rectangle(a, b);
+        ((Shape)rectangle).setNumber(++counter);
+        return rectangle;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(comparator);
+    private void setNumber(int number) {
+        this.number = number;
     }
 
-    Comparator<Shape> comparator = new Comparator<Shape>() {
-        @Override
-        public int compare(Shape o1, Shape o2) {
-            return 0;
-        }
-    };
+    public abstract double getArea() ;
+
+    public abstract double getPerimeter();
+
+    public static void setCounter(int counter) {
+        Shape.counter = counter;
+    }
+
+    private static int getCounter() {
+        counter = counter + 1;
+        return counter;
+    }
+
+    public abstract String getData();
+
+
+    public static Shape createFromData(String data){
+        String[] split = data.split(",");
+        return switch ((split[0])) {
+            case "Circle" -> new Circle(Double.parseDouble(split[1]));
+            case "Square" -> new Square(Double.parseDouble(split[1]));
+            case "Rectangle" -> new Rectangle(Double.parseDouble(split[1]), Double.parseDouble(split[2]));
+            default -> null;
+        };
+    }
+
+
+
 
     @Override
     public String toString() {
-        return "Shape nr " + getNumber() + ": ";
+        return "Figura nr " + number + ": ";
     }
 
 }

@@ -1,19 +1,21 @@
 package zad4.models;
 
+import java.util.Objects;
+
 public class Square extends Shape {
 
-    private int a;
+    private double a;
 
-    public Square(int a) {
+    public Square(double a) {
         this.a = a;
 
     }
 
-    public int getA() {
+    public double getA() {
         return a;
     }
 
-    public void setA(int a) {
+    public void setA(double a) {
         this.a = a;
     }
 
@@ -25,6 +27,25 @@ public class Square extends Shape {
     @Override
     public double getPerimeter() {
         return a * 4;
+    }
+
+    @Override
+    public String getData() {
+        return getClass().getSimpleName() + ","
+                + a;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Square square = (Square) o;
+        return Double.compare(a, square.a) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), a);
     }
 
     @Override

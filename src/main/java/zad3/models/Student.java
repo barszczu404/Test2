@@ -34,12 +34,24 @@ public class Student extends Person {
         return scholarship;
     }
 
+
     @Override
-    public String getGender() {
-        if(getPesel().charAt(9) %2 == 0){
-            return "kobieta";
-        }
-        return "mężczyzna";
+    public String getData() {
+        return getClass().getSimpleName() + ","
+                + firstName + ","
+                + lastName + ","
+                + pesel + ","
+                + city + ","
+                + group + ","
+                + scholarship;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", group='" + group + '\'' +
+                ", scholarship=" + scholarship +
+                '}';
     }
 
     @Override
