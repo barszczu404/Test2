@@ -104,7 +104,7 @@ public class ClinicService {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        return oldest5Doctors; //to nie dziala
+        return oldest5Doctors;
     }
 
     //- wypisz top 5 lekarzy co mieli najwiecej wizyt

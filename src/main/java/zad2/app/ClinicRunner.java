@@ -52,7 +52,7 @@ public class ClinicRunner {
                     if (visit.getDoctor().equals(entry.getValue())) {
                         for (Map.Entry<Integer, Patient> entry1 : patientsMap.entrySet()) {
                             if (visit.getPatient().equals(entry1.getValue())) {
-                                verifedVisitsList.add(visit); //na dane zlosliwe
+                                verifedVisitsList.add(visit);
                             }
                         }
                     }
