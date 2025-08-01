@@ -5,21 +5,19 @@ import java.util.Objects;
 
 public class Visit {
 
-    //numer identyfikacyjny lekarza, numer
-    //identyfikacyjny pacjenta oraz datę wizyty lekarskiej przeprowadzonej przez lekarza
-    //u pacjenta.
+
     private Doctor doctor;
     private Patient patient;
     private String dateOfVisit;
-    //mapy pacjenci lekarze po id, lista wizyt,
-
-    public Visit() {
-    }
 
 
-    public Visit(String dateOfVisit) {
+
+    public Visit(Doctor doctor, Patient patient, String dateOfVisit) {
+        this.doctor = doctor;
+        this.patient = patient;
         this.dateOfVisit = dateOfVisit;
     }
+
 
     public Doctor getDoctor() {
         return doctor;
@@ -63,23 +61,11 @@ public class Visit {
         String dateLiteral = dataAboutVisits[2];
         if (dateLiteral.trim().length() != 10)
             return null;
-        Visit visit = new Visit(dateLiteral);
         Doctor d = doctorsMap.get(Integer.parseInt(dataAboutVisits[0]));
-        visit.setDoctor(d);
         Patient p = patientsMap.get(Integer.parseInt(dataAboutVisits[1]));
-        visit.setPatient(p);
+        Visit visit = new Visit(d, p, dateLiteral);
         d.getVisits().add(visit);
         p.getVisits().add(visit);
-//        for (Map.Entry<Integer, Doctor> entry : doctorsMap.entrySet()) {
-//            if (dataAboutVisits[0].equals(entry.getKey())) {
-//                doctorsVisit.setDoctor(entry.getValue());
-//            }
-//        }
-//        for (Map.Entry<Integer, Patient> entry : patientsMap.entrySet()) {
-//            if (dataAboutVisits[1].equals(entry.getKey())) {
-//                doctorsVisit.setPatient(entry.getValue());
-//            }
-//        }
         return visit;
     }
 }

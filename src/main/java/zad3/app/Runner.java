@@ -20,15 +20,14 @@ public class Runner {
 
         Person[] people = new Person[]{null,janek, marta, olaf, stach, marlena, judyta, null, zenek};
         Person highestIncomePerson = getHighestIncomePerson(people);
-        getNumberOfWomenInGroup(people);
+        System.out.println("highestIncomePerson = " + highestIncomePerson);
+        int numberOfWomenInGroup = getNumberOfWomenInGroup(people);
+        System.out.println("numberOfWomenInGroup = " + numberOfWomenInGroup);
         List<Person> peopleList = Arrays.asList(people);
-//        ArrayList<Person> peopleArrayList = new ArrayList<>(peopleList);
-       // savePersonListToFile(peopleList, "ludziska.txt");
-//        getListOfPeopleFromFile("C:\\Users\\admin\\IdeaProjects\\Test2\\src\\main\\java\\zad2\\lekarze.txt");
+        ArrayList<Person> peopleArrayList = new ArrayList<>(peopleList);
+        savePersonListToFile(peopleList, "ludziska.txt");
 
         List<Person> loadedPeople = readPeopleFromFileToList("ludziska.txt");
-
-//
 
     }
 
@@ -46,28 +45,15 @@ public class Runner {
             }
         }
         return highestIncomePerson;
-
-//        Comparator<Person> comparator = new Comparator<Person>() {
-//            @Override
-//            public int compare(Person o1, Person o2) {
-//                return Double.compare(o1.getIncome(), o2.getIncome());
-//            }
-//        };
-//        Arrays.sort(array, comparator);
-//        //peopleSortedByIncome.sort(Comparator.comparingDouble(Person::getIncome));
-//        Person personWithHighestIncome = array[array.length - 1];
-//        return personWithHighestIncome;
     }
 
     public static int getNumberOfWomenInGroup(Person[] array) {
         int women = 0;
-        //int man = 0;
         for (Person person : array) {
 
             if (person != null && person.getGender().equals("kobieta")) {
                 women++;
             }
-            //man++;
         }
         return women;
     }
@@ -85,7 +71,6 @@ public class Runner {
                 }
 
             }
-
 
         } catch (IOException e) {
            e.printStackTrace();
@@ -114,19 +99,4 @@ public class Runner {
 
     }
 
-    public static ArrayList<Object> getListOfPeopleFromFile(String fileName) {
-        ArrayList<Person> peopleFromFile = null;
-        try {
-            FileInputStream fileInputStream = new FileInputStream(fileName);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            ArrayList<Person> dataFromFile = (ArrayList<Person>) objectInputStream.readObject();
-            dataFromFile.forEach(System.out::println);
-            peopleFromFile.addAll(dataFromFile);
-        } catch (IOException | RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return new ArrayList(peopleFromFile);
-    }
 }

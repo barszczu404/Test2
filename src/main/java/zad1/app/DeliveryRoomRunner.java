@@ -44,11 +44,6 @@ public class DeliveryRoomRunner {
         System.out.println("--------------");
         Map<DayOfWeek, Integer> dayOfWeekBornChildMap = DeliveryRoomService.getDayOfWeekBornChildMap(babies);
 
-//        Map.Entry<DayOfWeek, Integer> dayOfWeekWithMaxBirths = dayOfWeekBornChildMap.entrySet()
-//                .stream()
-//                .max(Map.Entry.comparingByValue())
-//                .orElseThrow();
-//        System.out.println(dayOfWeekWithMaxBirths);
 
         System.out.println("DeliveryRoomService.getDayOfWeekWithMostBirths(babies) = " + DeliveryRoomService.getDayOfWeekWithMostBirths(babies));
 
@@ -67,11 +62,7 @@ public class DeliveryRoomRunner {
 
         System.out.println("-------------------");
         DeliveryRoomService.getMothersOfTwins(new ArrayList<>(mothersMap.values()));
-//        System.out.println(getHeightAndNameOfTallestBoyAndGirl(babyArray));
-//        System.out.println(getDayOfBirthForMostChildren(babyArray));
-//        System.out.println(getNamesOfMothersOfBabyWeightOver4000G(mothers));
-//        System.out.println(getGirlsNamedAfterMother(babyArray));
-//        System.out.println(getMothersOfTwins(babyArray));
+
     }
 
 

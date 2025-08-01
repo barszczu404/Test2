@@ -64,16 +64,23 @@ public class ClinicRunner {
         }
 
         Doctor doctorWhoMadeMostVisits = ClinicService.getDoctorWhoMadeMostVisits(doctorsMap);
+        System.out.println("doctorWhoMadeMostVisits = " + doctorWhoMadeMostVisits);
         Patient patientWhoHasMostVisits = ClinicService.getPatientWhoHasMostVisits(patientsMap);
+        System.out.println("patientWhoHasMostVisits = " + patientWhoHasMostVisits);
 
         String doctorsFavSpecialization1 = ClinicService.getDoctorsFavSpecialization(new ArrayList<>(doctorsMap.values()));
         System.out.println("doctorsFavSpecialization1 = " + doctorsFavSpecialization1);
 
         int mostVisitsYear = ClinicService.getMostVisitsYear(verifedVisitsList);
+        System.out.println("mostVisitsYear = " + mostVisitsYear);
         List<Doctor> doctors = ClinicService.get5OldestDoctors(doctorsMap);
+        System.out.println("doctors = " + doctors);
         List<Doctor> mostWorkingDoctors = ClinicService.get5DoctorsThatMadeMostVisits(doctorsMap);
+        System.out.println("mostWorkingDoctors = " + mostWorkingDoctors);
         List<Patient> patientsThatVisitsAbove5Doctors = ClinicService.getPatientsThatVisitsAbove5Doctors(patientsMap);
+        System.out.println("patientsThatVisitsAbove5Doctors = " + patientsThatVisitsAbove5Doctors);
         List<Doctor> doctorsThatHaveOnly1Patient = ClinicService.getDoctorsThatHaveOnly1Patient(doctorsMap);
+        System.out.println("doctorsThatHaveOnly1Patient = " + doctorsThatHaveOnly1Patient);
 
 
     }

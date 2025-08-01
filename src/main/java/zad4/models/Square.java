@@ -8,7 +8,6 @@ public class Square extends Shape {
 
     public Square(double a) {
         this.a = a;
-
     }
 
     public double getA() {
@@ -32,7 +31,8 @@ public class Square extends Shape {
     @Override
     public String getData() {
         return getClass().getSimpleName() + ","
-                + a;
+                + getNumber() + ","
+                + a; //+ "," + getNumber(); ?
     }
 
     @Override

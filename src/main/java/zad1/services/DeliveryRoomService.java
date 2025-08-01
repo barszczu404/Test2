@@ -23,11 +23,6 @@ public class DeliveryRoomService {
 
 
     public static Map<DayOfWeek, Integer> getDayOfWeekBornChildMap(List<Newborn> list) {
-//        String dateString = "1991-10-10";
-//        LocalDate localDate = LocalDate.parse(dateString);
-//        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
-//        System.out.println(dayOfWeek);
-
 
         int[] daysOfWeekCounters = new int[7];
 

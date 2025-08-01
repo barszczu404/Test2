@@ -49,6 +49,7 @@ public class Rectangle extends Shape {
     @Override
     public String getData() {
         return getClass().getSimpleName() + ","
+                + getNumber() + ","
                 + a + ","
                 + b;
     }

@@ -34,6 +34,7 @@ public class Circle extends Shape {
     @Override
     public String getData() {
         return getClass().getSimpleName() + ","
+                + getNumber() + ","
                 + r;
     }
 

@@ -17,34 +17,24 @@ public class Runner {
             System.out.println(s);
         }
 
-        System.out.println(shapes.get(0));
-        System.out.println(shapes.get(0));
-        System.out.println(shapes.get(0));
-        System.out.println(shapes.get(0));
-        System.out.println(shapes.get(0));
-        System.out.println(shapes.get(0));
-
         Circle testCircle = new Circle(8);
 
-        System.out.println(testCircle);//nr zly
+        System.out.println(testCircle);
 
-        readShapesFromFileToList();
-
-
+        //readShapesFromFileToList();
 
         System.out.println(shapes.contains(new Square(10))); //contains sprwadza czy kolekcja zwwiera obiekt strukturalnie identyczn a nie ten konkretnie obiekt
 
-//        System.out.println(getShapeWithBiggestArea(shapes));
-//        System.out.println(getShapeWithTheBiggestPerimeter(shapes));
-//        File test = new File("test.txt");
-//        test.getAbsoluteFile();
-//        try {
-//            saveListOfFiguresToFile(shapes, test.getAbsolutePath());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        List<Shape> listTest = new ArrayList<>();
-//        getListOfShapesFromFile("src/main/java/zad4/models/test.txt", listTest);
+        Shape shapeWithBiggestArea = getShapeWithBiggestArea(shapes);
+        System.out.println("shapeWithBiggestArea = " + shapeWithBiggestArea);
+
+        Shape shapeWithTheBiggestPerimeter = getShapeWithTheBiggestPerimeter(shapes);
+        System.out.println("shapeWithTheBiggestPerimeter = " + shapeWithTheBiggestPerimeter);
+
+
+        saveListOfFiguresToFile(shapes, "shejpy.txt");
+        List<Shape> shapes1 = readShapesFromFileToList("shejpy.txt");
+
     }
 
 //    - znajdź figurę z największym obwodem
@@ -55,10 +45,6 @@ public class Runner {
              biggestPerimeterShape = shape;
          }
      }
-
-
-//        Collections.sort(list, comparator);
-//        Shape biggestPerimeterShape = list.get(list.size() - 1);
         return biggestPerimeterShape;
     }
 
@@ -84,21 +70,9 @@ public class Runner {
                 }
             }
 
-
-//            BufferedWriter bfw = new BufferedWriter(new FileWriter(fileName));
-//                for(Shape shape : shapes) {
-//                  if (shape instanceof Square square){
-//                      bfw.write("Kwadrat " + square.getA());
-//                  } else if (shape instanceof Circle circle) {
-//                      bfw.write("Koło " + circle.getR());
-//                  } else if (shape instanceof Rectangle rectangle){
-//                      bfw.write("Prostokąt " + rectangle.getA() + " " + rectangle.getB());
-//                  }
-//                  bfw.newLine();
-
         } catch (IOException e) {
            e.printStackTrace();
-        } //finally ze sprawdzeniem czy puste?
+        }
     }
 
     public static List<Shape> readShapesFromFileToList (String fileName){
@@ -120,25 +94,4 @@ public class Runner {
         return loadedShapes;
     }
 
-    public static List getListOfShapesFromFile(String fileName, List<Shape> shapes){
-        try {
-            BufferedReader bfr = new BufferedReader(new FileReader(fileName));
-            String line;
-            while ((line = bfr.readLine()) != null) {
-                String[] dataFromLine = line.split(" ");
-                if (dataFromLine[0] == "Kwadrat") {
-                    shapes.add(Shape.createSquare(Integer.parseInt(dataFromLine[1])));
-                } else if (dataFromLine[0] == "Koło"){
-                    shapes.add(Shape.createCircle(Integer.parseInt(dataFromLine[1])));
-                } else if (dataFromLine[0] == "Postokąt"){
-                    shapes.add(Shape.createRectangle(Integer.parseInt(dataFromLine[1]), Integer.parseInt(dataFromLine[2])));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return shapes;
-    }
 }
-//UWAGA: tylko figury tworzone metodą fabryczną powinny mieć nadawany sekwencyjnie numer, w przypadku gdy uzywamy konstruktora to kazda
-//figura ma numer 0.

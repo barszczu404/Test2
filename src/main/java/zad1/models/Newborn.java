@@ -14,13 +14,22 @@ public class Newborn {
     private Mother mother;
 
 
-    public Newborn(int id, String gender, String firstName, String dateOfBirth, double weight, int height) {
+    private Newborn(int id, String gender, String firstName, String dateOfBirth, double weight, int height, Mother mother) {
         this.id = id;
         this.gender = gender;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
         this.weight = weight;
         this.height = height;
+        this.mother = mother;
+    }
+
+    ///static factory method
+    public static Newborn create(int id, String gender, String firstName, String dateOfBirth, double weight, int height, Mother mother) {
+        if (mother == null) {
+            throw new RuntimeException("Matka nie może być nullem!");
+        }
+        return new Newborn(id, gender, firstName, dateOfBirth, weight, height, mother);
     }
 
     public String getGender() {
@@ -59,10 +68,6 @@ public class Newborn {
         return mother;
     }
 
-    public void setMother(Mother mother) {
-        //if (mother.getId() == this.mother.getId())
-        this.mother = mother;
-    }
 
     public int getId() {
         return id;
@@ -93,18 +98,14 @@ public class Newborn {
         return Objects.hash(id, gender, firstName, dateOfBirth, weight, height, mother);
     }
 
-    public static Newborn createFromString(String line){
-        String[] dataFromLine = line.split(" ");
-        Newborn newborn = new Newborn(Integer.parseInt(dataFromLine[0]), dataFromLine[1], dataFromLine[2], dataFromLine[3], Integer.parseInt(dataFromLine[4]), Integer.parseInt(dataFromLine[5]));
-        return newborn;
-    }
+
 
      public static Newborn createFromString(String line, Map<Integer, Mother> mothersMap){
         String[] dataFromLine = line.split(" ");
          int motherId = Integer.valueOf(dataFromLine[6]);
-         Newborn newborn = new Newborn(Integer.parseInt(dataFromLine[0]), dataFromLine[1], dataFromLine[2], dataFromLine[3], Integer.parseInt(dataFromLine[4]), Integer.parseInt(dataFromLine[5]));
          Mother motherForNewborn = mothersMap.get(motherId);
-         newborn.setMother(motherForNewborn);
+         Newborn newborn = new Newborn(Integer.parseInt(dataFromLine[0]), dataFromLine[1], dataFromLine[2], dataFromLine[3], Integer.parseInt(dataFromLine[4]), Integer.parseInt(dataFromLine[5]), motherForNewborn);
+//         Newborn newborn = Newborn.create(Integer.parseInt(dataFromLine[0]), dataFromLine[1], dataFromLine[2], dataFromLine[3], Integer.parseInt(dataFromLine[4]), Integer.parseInt(dataFromLine[5]), motherForNewborn);
          motherForNewborn.getChildren().add(newborn);
         return newborn;
     }

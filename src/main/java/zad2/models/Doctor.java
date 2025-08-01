@@ -2,6 +2,7 @@ package zad2.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Doctor extends Person {
 
@@ -37,4 +38,18 @@ public class Doctor extends Person {
         return visits;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Doctor doctor = (Doctor) o;
+        return Objects.equals(specialization, doctor.specialization) && Objects.equals(nip, doctor.nip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), specialization, nip);
+    }
 }

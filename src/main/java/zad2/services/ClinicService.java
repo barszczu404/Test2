@@ -40,19 +40,17 @@ public class ClinicService {
         for (Doctor doctor : doctors) {
             specializationsCountersMap.put(doctor.getSpecialization(), specializationsCountersMap.getOrDefault(doctor.getSpecialization(), 0) + 1);
         }
-        //z mapy wyciagnac entrySet i znalezc obiekt entry o najwyzszej wrtosci czyli value() i wyjac jego klucz
         Set<Map.Entry<String, Integer>> specializationsSet = specializationsCountersMap.entrySet();
 
         int specializationsOccurrencesCnt = 0;
         Map.Entry<String, Integer> commonSpecialization = null;
-        for (Map.Entry<String, Integer> entry : specializationsSet){
-            if (entry.getValue() > specializationsOccurrencesCnt){
+        for (Map.Entry<String, Integer> entry : specializationsSet) {
+            if (entry.getValue() > specializationsOccurrencesCnt) {
                 specializationsOccurrencesCnt = entry.getValue();
                 commonSpecialization = entry;//wyjac obiket a nie wartosc
             }
 
         }
-        //rzutowanie tylko wtedy gdy dany typ znajduje sie w hierarchii!
         return commonSpecialization.getKey();
 
     }
@@ -61,25 +59,16 @@ public class ClinicService {
     public static int getMostVisitsYear(List<Visit> visits) {
         Map<Integer, Integer> yearsCnt = new HashMap<>();
 
-//        List<LocalDate> years = new ArrayList<>();
         int tmpYear = 0;
         for (Visit visit : visits) {
             LocalDate date = LocalDate.parse(visit.getDateOfVisit());
             tmpYear = date.getYear();
-//            years.add(date);
-//        }
-//        for (int i = 0; i < years.size(); i++) {
-//            int counter = 0;
-//            if (years.get(i).equals()) {
-//                tmpYear = years.get(i);
-//                counter++;
-//            }
             yearsCnt.put(tmpYear, yearsCnt.getOrDefault(tmpYear, 0) + 1);
         }
         int mostCommonYear = 0;
         for (Map.Entry<Integer, Integer> entry : yearsCnt.entrySet()) {
-            if (entry.getValue() > mostCommonYear) {
-                mostCommonYear = entry.getValue();
+            if (entry.getKey() > mostCommonYear) {
+                mostCommonYear = entry.getKey();
             }
         }
         return mostCommonYear;
@@ -87,10 +76,8 @@ public class ClinicService {
 
     //- wypisz top 5 najstarszych lekarzy
     public static List<Doctor> get5OldestDoctors(Map<Integer, Doctor> doctors) {
-        List<Doctor> oldest5Doctors = new ArrayList<>();
         int doctorsAge = 0;
-
-        Map<Integer, Doctor> doctorsAgeMap = new HashMap<>();
+        Map<Doctor, Integer> doctorsAgeMap = new HashMap<>();
         for (Map.Entry<Integer, Doctor> entry : doctors.entrySet()) {
             String birthDate = entry.getValue().getDateOfBirth();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -98,21 +85,26 @@ public class ClinicService {
             LocalDate now = LocalDate.now();
             Period period = Period.between(doctorBirthDate, now);
             doctorsAge = period.getYears();
-            doctorsAgeMap.put(doctorsAge, entry.getValue());
+            doctorsAgeMap.put(entry.getValue(), doctorsAge);
         }
-        Map<Integer, Doctor> sortedMap = doctorsAgeMap.entrySet()
+        Map<Doctor, Integer> sortedMap = doctorsAgeMap.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByKey())
+                .sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (e1, e2) -> e1,
                         LinkedHashMap::new
                 ));
-        for (int i = Math.max(0, sortedMap.size() - 5); i < sortedMap.size(); i++) {
-            oldest5Doctors.add(sortedMap.get(i));
-        }
-        return oldest5Doctors;
+
+        List<Doctor> oldest5Doctors = doctorsAgeMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Doctor, Integer>comparingByValue().reversed()) // sortujemy malejąco po wieku
+                .limit(5) // bierzemy 5 najstarszych
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return oldest5Doctors; //to nie dziala
     }
 
     //- wypisz top 5 lekarzy co mieli najwiecej wizyt
@@ -133,29 +125,36 @@ public class ClinicService {
     }
 
     //- zwroc pacjentow ktorzy byli u minumum 5ciu roznych lekarzy
-    public static List<Patient> getPatientsThatVisitsAbove5Doctors(Map<Integer, Patient> patients) {
+    public static List<Patient> getPatientsThatVisitsAbove5Doctors(Map<Integer, Patient> patientsMap) {
         List<Patient> patientsVisited5DifferentDoctors = new ArrayList<>();
-        for (Map.Entry<Integer, Patient> entry : patients.entrySet()) {
-            if (entry.getValue().getVisits().size() <= 5) {
-                for (Visit visit : entry.getValue().getVisits()) {
-                    for (int i = 0; i < entry.getValue().getVisits().size(); i++) {
-                        if (!(entry.getValue().getVisits().get(0).equals(entry.getValue().getVisits().get(i)))) {
-                            patientsVisited5DifferentDoctors.add(entry.getValue());
-                        }
-                    }
-                }
+        for (Patient p : patientsMap.values()) {
+            Set<Doctor> doctorSet = new HashSet<>();
+            for (Visit visit : p.getVisits()) {
+                doctorSet.add(visit.getDoctor());
             }
+            if (doctorSet.size() >= 5) {
+                patientsVisited5DifferentDoctors.add(p);
+            }
+
         }
+
         return patientsVisited5DifferentDoctors;
     }
 
     //- zwroc lekarzy ktorzy przyjeli tylko jednego pacjenta
-    public static List<Doctor> getDoctorsThatHaveOnly1Patient(Map<Integer, Doctor> doctors) {
+    public static List<Doctor> getDoctorsThatHaveOnly1Patient(Map<Integer, Doctor> doctorMap) {
         List<Doctor> unpopularDoctors = new ArrayList<>();
-        for (Map.Entry<Integer, Doctor> entry : doctors.entrySet()) {
-            if (entry.getValue().getVisits().size() == 1) ;
-            unpopularDoctors.add(entry.getValue());
+        for (Doctor doctor : doctorMap.values()) {
+            Set<Patient> patientsSet = new HashSet<>();
+            for (Visit v : doctor.getVisits()) {
+                patientsSet.add(v.getPatient());
+            }
+            if (patientsSet.size() == 1) {
+                unpopularDoctors.add(doctor);
+            }
         }
+
         return unpopularDoctors;
     }
 }
+

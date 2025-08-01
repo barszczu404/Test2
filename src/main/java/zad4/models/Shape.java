@@ -1,7 +1,5 @@
 package zad4.models;
 
-import java.util.Objects;
-import java.util.Comparator;
 
 public abstract class Shape {
 
@@ -12,23 +10,24 @@ public abstract class Shape {
     public Shape() {
     }
 
+
     public static Circle createCircle(int r) {
         Circle circle = new Circle(r);
-        ((Shape)circle).setNumber(++counter);
+        ((Shape) circle).setNumber(++counter);
         return circle;
 
     }
 
     public static Square createSquare(int a) {
-        Square square =  new Square(a);
-        ((Shape)square).setNumber(++counter);
+        Square square = new Square(a);
+        ((Shape) square).setNumber(++counter);
         return square;
     }
 
 
     public static Rectangle createRectangle(int a, int b) {
-        Rectangle rectangle =  new Rectangle(a, b);
-        ((Shape)rectangle).setNumber(++counter);
+        Rectangle rectangle = new Rectangle(a, b);
+        ((Shape) rectangle).setNumber(++counter);
         return rectangle;
     }
 
@@ -36,33 +35,42 @@ public abstract class Shape {
         this.number = number;
     }
 
-    public abstract double getArea() ;
+    public int getNumber() {
+        return number;
+    }
+
+    public abstract double getArea();
 
     public abstract double getPerimeter();
 
-    public static void setCounter(int counter) {
-        Shape.counter = counter;
-    }
-
-    private static int getCounter() {
-        counter = counter + 1;
-        return counter;
-    }
 
     public abstract String getData();
 
 
-    public static Shape createFromData(String data){
+    public static Shape createFromData(String data) {
         String[] split = data.split(",");
-        return switch ((split[0])) {
-            case "Circle" -> new Circle(Double.parseDouble(split[1]));
-            case "Square" -> new Square(Double.parseDouble(split[1]));
-            case "Rectangle" -> new Rectangle(Double.parseDouble(split[1]), Double.parseDouble(split[2]));
-            default -> null;
-        };
+        Shape shape = null;
+        switch ((split[0])) {
+            case "Circle": {
+                Circle circle = new Circle(Double.parseDouble(split[2])); //setNumber(split[]); ?
+                ((Shape) circle).setNumber(Integer.parseInt(split[1]));
+                shape = circle;
+            }
+            break;
+            case "Square":
+
+                Square square = new Square(Double.parseDouble(split[2]));
+                ((Shape)square).setNumber(Integer.parseInt(split[1]));
+                shape = square;
+                break;
+            case "Rectangle":
+                Rectangle rectangle = new Rectangle(Double.parseDouble(split[2]), Double.parseDouble(split[3]));
+                ((Shape)rectangle).setNumber(Integer.parseInt(split[1]));
+                shape = rectangle;
+
+        }
+        return shape;
     }
-
-
 
 
     @Override
